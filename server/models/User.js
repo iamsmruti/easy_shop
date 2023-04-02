@@ -3,15 +3,20 @@ import mongoose from 'mongoose';
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
-        default: '',
+        required: true,
     },
     email: {
         type: String,
         required: true,
+        unique: true,
     },
     password: {
         type: String,
         required: true,
+    },
+    role: {
+        type: String,
+        default: 'user',
     },
     address: {
         street: {
@@ -38,19 +43,7 @@ const UserSchema = new mongoose.Schema({
     profileImage: {
         type: String,
         default: '',
-    },
-    purchases: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Purchase',
-        },
-    ],
-    cart: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
-        },
-    ],
+    }
 })
 
 export default mongoose.model('User', UserSchema);

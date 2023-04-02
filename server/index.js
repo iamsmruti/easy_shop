@@ -29,11 +29,11 @@ await server.start();
 
 // Express middleware for Apollo Server
 app.use(
-  '/',
+  '/graphql',
   cors(),
   bodyParser.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }),
+    context: async ({ req }) => ({ token: req.headers.token }), 
   }),
 );
 
@@ -45,5 +45,6 @@ await mongoose.connect(process.env.DB_URL, {
   new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
 
   console.log('🥂 Connected to MongoDB')
-  console.log(`🚀 Server ready at http://localhost:4000/`);
+  console.log(`🚀 Server ready at http://localhost:4000/graphql`);
 });
+

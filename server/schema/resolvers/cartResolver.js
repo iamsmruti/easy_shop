@@ -1,4 +1,4 @@
-export const productResolvers = {
+export const cartResolvers = {
     Query: {},
     Mutation: {},
     Subscription: {}
