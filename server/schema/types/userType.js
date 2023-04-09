@@ -8,7 +8,7 @@ export const userTypes = `#graphql
         createdAt: String!
         updatedAt: String!
         address: Address!
-        profilePic: String!
+        profilePic: String
         cart: Cart!
         wishlist: Wishlist!
     }
@@ -17,8 +17,15 @@ export const userTypes = `#graphql
         street: String!
         city: String!
         state: String!
-        zip: String!
+        zipCode: String!
     } 
+
+    input AddressInput {
+        street: String!
+        city: String!
+        state: String!
+        zipCode: String!
+    }
 
     type Query {
         user(id: ID!): User!
@@ -30,6 +37,12 @@ export const userTypes = `#graphql
             name: String!, 
             email: String!, 
             password: String!
+        ): User!
+
+        updateUser(
+            name: String!,
+            address: AddressInput!,
+            profilePic: String!,
         ): User!
     }
 `

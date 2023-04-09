@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import morgan from 'morgan';
 
 // Apollo Server Imports
 import { ApolloServer } from '@apollo/server';
@@ -12,6 +13,8 @@ import { expressMiddleware } from '@apollo/server/express4';
 
 // GraphQL Schema
 import { _typeDefs, _resolvers } from './schema/schema.js'
+import helmet from 'helmet';
+import { verify } from './middlewares/verification.js';
 
 dotenv.config();
 
@@ -22,10 +25,16 @@ const httpServer = http.createServer(app);
 export const server = new ApolloServer({
   typeDefs: _typeDefs,
   resolvers: _resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 });
 
 await server.start();
+
+app.use(morgan('dev'))
+
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }))
+
+app.use(verify)
 
 // Express middleware for Apollo Server
 app.use(
@@ -33,9 +42,10 @@ app.use(
   cors(),
   bodyParser.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }), 
+    context: async ({ req, res }) => ({ req, res }), 
   }),
 );
+
 
 // Connect to MongoDB & start server
 await mongoose.connect(process.env.DB_URL, {

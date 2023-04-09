@@ -2,6 +2,7 @@ export const cartTypes = `#graphql
     type Cart {
         _id: ID!
         products: [CartItem!]!
+        user: [User!]!
     }
 
     type CartItem {

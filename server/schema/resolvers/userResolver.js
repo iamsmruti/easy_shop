@@ -61,6 +61,24 @@ export const userResolvers = {
                 if (err.keyPattern.email) throw new Error("Email Already Exist")
                 throw new Error(err)
             }
+        },
+
+        updateUser: async (parent, args, context, info) => {
+            if(!context.req.isAuth) throw new Error('You must be logged in to perform this action')
+            const loggedinUser = context.req.user
+
+            const user = await User.findByIdAndUpdate({_id: loggedinUser.id}, {
+                name: args.name,
+                address: {
+                    street: args.address.street,
+                    city: args.address.city,
+                    state: args.address.state,
+                    zipCode: args.address.zipCode
+                },
+                profilePic: args.profilePic,
+            });
+
+            return user
         }
     },
 }

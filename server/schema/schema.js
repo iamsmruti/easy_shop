@@ -12,6 +12,9 @@ import { cartResolvers } from './resolvers/cartResolver.js';
 import { wishlistTypes } from './types/wishlistType.js';
 import { wishlistResolvers } from './resolvers/wishlistResolver.js';
 
+import { categoryTypes } from './types/categoryTypes.js'
+import { categoryResolver } from './resolvers/categoryResolver.js'
+
 
 const Query = `#graphql
   type Query {
@@ -25,5 +28,5 @@ const resolvers = {
   }
 };
 
-export const _typeDefs = [Query, userTypes, productTypes, cartTypes, wishlistTypes];
-export const _resolvers = _.merge(resolvers, userResolvers, productResolvers, cartResolvers, wishlistResolvers);
+export const _typeDefs = [Query, userTypes, productTypes, cartTypes, wishlistTypes, categoryTypes];
+export const _resolvers = _.merge(resolvers, userResolvers, productResolvers, cartResolvers, wishlistResolvers, categoryResolver);
