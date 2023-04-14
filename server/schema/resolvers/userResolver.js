@@ -54,6 +54,21 @@ export const userResolvers = {
                     email: email, 
                     password: hashedPassword 
                 });
+
+                // const wishlist = await Wishlist.create({
+                //     userId: user._id,
+                //     products: [{}]
+                // })
+
+                // const cart = await Cart.create({
+                //     userId: user._id,
+                //     products: [{}]
+                // })
+
+                // const orderHistory = await OrderHistory.create({
+                //     userId: user._id,
+                //     products: [{}],
+                // })
                 
                 return user;
             } catch (err) {

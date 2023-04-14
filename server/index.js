@@ -39,8 +39,10 @@ app.use(verify)
 // Express middleware for Apollo Server
 app.use(
   '/graphql',
-  cors(),
   bodyParser.json(),
+  cors({
+    origin: '*'
+  }),
   expressMiddleware(server, {
     context: async ({ req, res }) => ({ req, res }), 
   }),

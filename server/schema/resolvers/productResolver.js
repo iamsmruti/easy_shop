@@ -1,9 +1,9 @@
 import Product from '../../models/Product.js'
+import User from '../../models/User.js'
 
 export const productResolvers = {
     Query: {
         products: async (parent, args, context, info) => {
-            const {id, name, description, price, image, category} = args
             try {
                 const products = await Product.find({})
 
@@ -15,18 +15,34 @@ export const productResolvers = {
     },
     Mutation: {
         createProduct: async (parent, args, context, info) => {
-            const {name, description, price, images, category, seller} = args
+            const { id } = context.req.user
+            console.log(id)
+            const {name, description, price, images, category} = args
+
             try {
+                const seller = await User.find({_id: id})
+                console.log(seller)
+
                 const product = await Product.create({
                     name: name, 
                     description: description,
                     category: category,
                     price: price,
                     images: images,
-                    seller: seller
+                    seller: id
                 })
 
-                return product
+                const createdProduct = {
+                    id: product._id,
+                    name: product.name,
+                    description: product.description,
+                    category: product.category,
+                    price: product.price,
+                    images: product.images,
+                    seller: seller[0]
+                }
+
+                return createdProduct
             } catch (err) {
                 throw new Error(err.message)
             }
@@ -45,6 +61,9 @@ export const productResolvers = {
         },
 
         updateProduct: async (parent, args, context, info) => {
+            if(context.req.user.id !== args.seller) 
+                throw new Error("You can only delete your products")
+
             const {id, name, description, price, images, category} = args
             try {
                 const updatedProduct = await Product.findByIdAndUpdate({_id: id} , {

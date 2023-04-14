@@ -1,24 +1,21 @@
 export const wishlistTypes = `#graphql
     type Wishlist {
-        id: ID!
+        userId: ID!
         products: [WishlistItem!]!
     }
 
     type WishlistItem {
-        id: ID!
+        quantity: String!
         product: Product!
     }
 
     type Query {
-        wishlist(id: ID!): Wishlist!
+        wishlist: Wishlist!
     }
 
     type Mutation {
-        addToWishlist(id: ID!): Wishlist!
-        removeFromWishlist(id: ID!): Wishlist!
-    }
-
-    type Subscription {
-        wishlistUpdated: Wishlist!
+        createWishlist: Wishlist!
+        addToWishlist(productId: ID!): Wishlist!
+        removeFromWishlist(productId: ID!): Wishlist!
     }
 `
